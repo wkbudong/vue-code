@@ -5,37 +5,51 @@ const autoprefixer = require('autoprefixer');
 const AssetsPlugin = require('assets-webpack-plugin');
 
 module.exports = {
+  devtool: 'cheap-module-source-map',
   entry: {
+    vendor: [
+      'babel-polyfill',
+      'vue',
+      'vue-router',
+      'vuex'
+    ],
     client: ['./client/main.js']
   },
   output: {
-    path: path.join(__dirname, '/./client/'),
-    filename: '[name].js',
-    publicPath: 'http://0.0.0.0:1992/client/'
+    path: path.join(__dirname, '/../assets/js'),
+    filename: '[name].[chunkhash].js',
   },
   plugins: [
+    new AssetsPlugin({
+      path: path.join(__dirname, '/../assets/js')
+    }), //生成编译映射json
     new webpack.DefinePlugin({
-      __DEBUG__: true
+      __DEBUG__: false,
+      'process.env.NODE_ENV': JSON.stringify('production')
     }),
-
     new webpack.ProvidePlugin({
       $: "jquery",
     }),
-    // new ExtractTextPlugin("[name].css"),
-    // new AssetsPlugin({
-    //   path: path.join(__dirname, '/../assets/')
-    // }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function (module) {
+         // 该配置假定你引入的 vendor 存在于 node_modules 目录中
+         return module.context && module.context.indexOf('node_modules') !== -1;
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "manifest",
+      minChunks: Infinity
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: true
+      }
+    })
   ],
-  devServer: {
-    host: '0.0.0.0',
-    disableHostCheck: true,
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    }
-  },
   resolve: { 
     alias: { 
-      'vue': 'vue/dist/vue.js'
+      'vue': 'vue/dist/vue.js' 
     } 
   },
   module: {
@@ -74,21 +88,11 @@ module.exports = {
     }, {
       test: /\.vue$/,
       exclude: /node_modules/,
-      // use: ['vue-loader'],
-      // options: {
-      //   // css: ExtractTextPlugin.extract({
-      //   //   loader: 'css-loader',
-      //   //   fallbackLoader: 'vue-style-loader' // <- this is a dep of vue-loader, so no need to explicitly install if using npm3
-      //   //  }),
-      //   // vue-loader options go here
-      //   postcss: [require('autoprefixer')({ browsers: ['last 10 Chrome versions', 'last 5 Firefox versions', 'Safari >= 6', 'ie > 8'] })]
-      // }
-      use : [{
-        loader: 'vue-loader',
-        options :{
-          postcss: [require('autoprefixer')({ browsers: ['last 10 Chrome versions', 'last 5 Firefox versions', 'Safari >= 6', 'ie > 8'] })]
-        }
-      }]
+      use: ['vue-loader'],
+      options: {
+        // vue-loader options go here
+        postcss: [require('autoprefixer')({ browsers: ['last 10 Chrome versions', 'last 5 Firefox versions', 'Safari >= 6', 'ie > 8'] })]
+      }
     }, {
       test: /\.s[a|c]ss$/,
       use: ["style-loader","css-loader","sass-loader"]

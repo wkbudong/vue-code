@@ -6,9 +6,7 @@
   "scripts": {
     "develop": "concurrently 'npm run test' 'npm run server'",
     "test": "webpack-dev-server --inline --port=1992 --hot --config build/webpack.dev.config.js --host 0.0.0.0",
-    "server": "sudo NODE_ENV=develop nodemon app.js",
-    "proserver": "sudo NODE_ENV=production nodemon app.js",
-    "build": "webpack --config build/webpack.pro.config.js"
+    "server": "sudo NODE_ENV=develop nodemon app.js"
   },
   "author": "weikai",
   "license": "ISC",
@@ -28,14 +26,9 @@
     "babel-runtime": "^6.23.0",
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^2.1.2",
-    "jquery": "^3.2.1",
-    "lodash": "^4.17.4",
     "node-sass": "^4.5.3",
-    "request": "^2.83.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
-    "superagent": "^3.6.0",
-    "superagent-jsonp": "^0.1.1",
     "swig": "^1.4.2",
     "vue-hot-reload-api": "^2.1.0",
     "vue-html-loader": "^1.2.4",

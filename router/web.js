@@ -11,17 +11,22 @@ exports.renderMainView =async function(ctx) {
       }
     });
     ctx.clientScriptPath = "http://127.0.0.1:1992/client/client.js";
-    ctx.clientCssPath = `http://127.0.0.1:1992/client/client.css`;
+    // ctx.clientCssPath = `http://127.0.0.1:1992/client/client.css`;
+    ctx.vendorScriptPath = "";
+    ctx.manifestScriptPath = "";
   } else {
     const version = require('../assets/js/webpack-assets.json');
-    ctx.clientScriptPath = `/js/${version['main']['js']}`;
-    ctx.clientCssPath = `/css/${version['main']['css']}`;
+    ctx.clientScriptPath = `/js/${version['client']['js']}`;
+    ctx.vendorScriptPath = `/js/${version['vendor']['js']}`;
+    ctx.manifestScriptPath = `/js/${version['manifest']['js']}`;
+    //ctx.clientCssPath = `/css/${version['main']['css']}`;
   }
   return await ctx.render('main', {
-    vendor: ctx.vendorScriptPath,
+    vendorjs: ctx.vendorScriptPath,
     routes: ctx.routes || JSON.stringify([]),
     clientjs: ctx.clientScriptPath,
-    clientcss : ctx.clientCssPath,
+    manifestjs: ctx.manifestScriptPath,
+    //clientcss : ctx.clientCssPath,
   });
 }
 

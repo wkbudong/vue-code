@@ -3,7 +3,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from './store';
 
-import { default as configureRouter } from './util/creat-router.js';
+import { default as configureRouter } from './util/create-router.js';
 
 Vue.use(VueRouter);
 

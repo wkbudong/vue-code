@@ -11,9 +11,12 @@
   <meta name="renderer" content="webkit">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
   <title>test</title>
-  <script>
-    
-  </script>
+  <style>
+    [v-cloak] {
+      display: none!important;
+    }
+  </style>
+  <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js"></script>
 
 </head>
 
@@ -21,7 +24,9 @@
   <div id="app">
     <router-view></router-view>
   </div>
-  
+  <script src="{{manifestjs}}"></script>
+  <script src="{{vendorjs}}"></script>
+  <script src="{{clientjs}}"></script>
 </body>
-<script src="{{clientjs}}"></script>
+
 </html>
